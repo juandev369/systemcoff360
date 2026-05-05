@@ -4,183 +4,585 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Calificación en Línea</title>
-    <link rel="shortcut icon" type="image/png" href="../img/ico.png">
+    <title>SystemCOFF 360 — Gestión de Fincas Cafeteras</title>
+    <link rel="shortcut icon" type="image/png" href="img/ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        /* ── GRADIENTE VERDE FINCA ── */
+        .gradient-bg {
+            background: linear-gradient(135deg, #14532d 0%, #16a34a 60%, #22c55e 100%);
+        }
+
+        .gradient-bg-soft {
+            background: linear-gradient(135deg, #022c12 0%, #15803d 100%);
+        }
+
+        /* ── SLIDER ── */
         .slide {
             display: none;
         }
 
         .slide.active {
             display: block;
-            animation: fadeIn 0.8s;
+            animation: fadeIn 0.15s ease;
         }
 
         @keyframes fadeIn {
             from {
                 opacity: 0;
+                transform: scale(1.02);
             }
 
             to {
                 opacity: 1;
+                transform: scale(1);
             }
+        }
+
+        /* ── CARDS ── */
+        .feature-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.12);
+        }
+
+        /* ── MODULE CARD ── */
+        .mod-card {
+            transition: all 0.2s ease;
+            border: 1px solid rgba(34, 197, 94, 0.15);
+        }
+
+        .mod-card:hover {
+            border-color: rgba(34, 197, 94, 0.4);
+            background: rgba(34, 197, 94, 0.06) !important;
+            transform: translateY(-3px);
+        }
+
+        /* ── SCROLL SMOOTH ── */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ── NAV LINK ── */
+        .nav-link {
+            transition: color 0.15s ease;
+        }
+
+        .nav-link:hover {
+            color: #22c55e;
         }
     </style>
 </head>
 
-<body class="bg-gray-50 font-sans text-gray-800">
+<body class="bg-white text-gray-800">
 
-    <nav class="bg-white shadow-md sticky top-0 z-50">
+    <!-- ════════════════════════════════════════════════
+         NAVBAR
+    ════════════════════════════════════════════════ -->
+    <nav class="bg-white border-b border-green-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center">
-                    <img src="../img/logo.png" alt="Logo" class="w-28 h-16">
+
+                <!-- LOGO -->
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-green-200">
+                        <i class="fas fa-seedling text-white text-base"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <div class="text-green-800 font-bold text-base leading-none">SystemCOFF 360</div>
+                        <div class="text-green-600 text-[9px] uppercase tracking-widest">Gestión de Fincas</div>
+                    </div>
                 </div>
-                <div class="hidden md:flex space-x-8 font-medium">
-                    <a href="#inicio" class="hover:text-blue-600 transition">Inicio</a>
-                    <a href="#nosotros" class="hover:text-blue-600 transition">Nosotros</a>
-                    <a href="#objetivos" class="hover:text-blue-600 transition">Objetivos</a>
+
+                <!-- LINKS DESKTOP -->
+                <div class="hidden md:flex items-center space-x-8 font-medium">
+                    <a href="#inicio" class="nav-link text-green-700 text-sm">Inicio</a>
+                    <a href="#nosotros" class="nav-link text-green-700 text-sm">Nosotros</a>
+                    <a href="#modulos" class="nav-link text-green-700 text-sm">Módulos</a>
+                    <a href="#objetivos" class="nav-link text-green-700 text-sm">Objetivos</a>
                     <a href="../views/usuarios/login.php"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Ingresar</a>
+                        class="gradient-bg text-white px-5 py-2 rounded-xl hover:opacity-90 transition text-sm font-semibold shadow-md shadow-green-200">
+                        <i class="fas fa-sign-in-alt mr-1"></i> Ingresar
+                    </a>
                 </div>
+
+                <!-- MOBILE BUTTON -->
+                <button id="menu-btn" class="md:hidden text-green-600 text-xl">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
+        </div>
+
+        <!-- MOBILE MENU -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 bg-white border-t border-green-200 shadow-lg">
+            <a href="#inicio" class="block py-2 text-sm text-green-700">Inicio</a>
+            <a href="#nosotros" class="block py-2 text-sm text-green-700">Nosotros</a>
+            <a href="#modulos" class="block py-2 text-sm text-green-700">Módulos</a>
+            <a href="#objetivos" class="block py-2 text-sm text-green-700">Objetivos</a>
+            <a href="../views/usuarios/login.php"
+                class="block mt-3 gradient-bg text-white text-center py-2 rounded-xl text-sm font-semibold shadow-md">
+                <i class="fas fa-sign-in-alt mr-1"></i> Ingresar al sistema
+            </a>
         </div>
     </nav>
 
-    <section id="inicio" class="relative h-[500px] overflow-hidden text-white">
+
+    <!-- ════════════════════════════════════════════════
+         HERO SLIDER
+    ════════════════════════════════════════════════ -->
+    <section id="inicio" class="relative h-[580px] overflow-hidden text-white">
+
+        <!-- SLIDE 1 -->
         <div class="slide active relative h-full">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=80"
-                class="absolute inset-0 w-full h-full object-cover brightness-50" alt="Estudiantes">
+            <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1600&q=80"
+                class="absolute inset-0 w-full h-full object-cover" style="filter: brightness(0.32) saturate(1.2)"
+                alt="Finca cafetera Colombia">
+            <div class="absolute inset-0"
+                style="background: linear-gradient(135deg, rgba(2,44,18,.75) 0%, rgba(2,13,6,.4) 100%)"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">Gestión Académica Simplificada</h1>
-                <p class="text-xl max-w-2xl">La plataforma más robusta para el seguimiento y evaluación del rendimiento
-                    escolar en tiempo real.</p>
+                <span
+                    class="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-seedling"></i> JD Solutions
+                </span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-5 leading-tight">
+                    Gestiona tu finca<br>
+                    <span class="text-green-300">desde un solo lugar</span>
+                </h1>
+                <p class="text-lg max-w-2xl text-green-100 leading-relaxed mb-8">
+                    La plataforma más completa para el registro de cosechas, control de inventario,
+                    tareas y nómina de tu finca cafetera.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="../views/usuarios/login.php"
+                        class="gradient-bg text-white px-8 py-3 rounded-xl font-bold text-base shadow-xl hover:opacity-90 transition">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Ingresar al sistema
+                    </a>
+                    <a href="#modulos"
+                        class="bg-white/10 backdrop-blur border border-white/20 text-white px-8 py-3 rounded-xl font-semibold text-base hover:bg-white/20 transition">
+                        <i class="fas fa-th-large mr-2"></i>Ver módulos
+                    </a>
+                </div>
             </div>
         </div>
+
+        <!-- SLIDE 2 -->
         <div class="slide relative h-full">
-            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1600&q=80"
-                class="absolute inset-0 w-full h-full object-cover brightness-50" alt="Evaluación">
+            <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1600&q=80"
+                class="absolute inset-0 w-full h-full object-cover" style="filter: brightness(0.3) saturate(1.3)"
+                alt="Campo verde Colombia">
+            <div class="absolute inset-0"
+                style="background: linear-gradient(135deg, rgba(2,44,18,.75) 0%, rgba(2,13,6,.4) 100%)"></div>
             <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                <h1 class="text-4xl md:text-6xl font-bold mb-4">Transparencia y Precisión</h1>
-                <p class="text-xl max-w-2xl">Resultados inmediatos para padres, docentes y estudiantes con solo un clic.
+                <span
+                    class="inline-flex items-center gap-2 bg-yellow-400/20 border border-yellow-400/30 text-yellow-300 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-leaf"></i> Módulo de Producción
+                </span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-5 leading-tight">
+                    Cosechas y ventas<br>
+                    <span class="text-yellow-300">en tiempo real</span>
+                </h1>
+                <p class="text-lg max-w-2xl text-green-100 leading-relaxed mb-8">
+                    Registra cada cosecha, controla precios de referencia y genera reportes
+                    financieros automáticos para tu finca.
                 </p>
+                <a
+                    class="gradient-bg text-white px-8 py-3 rounded-xl font-bold text-base shadow-xl hover:opacity-90 transition">
+                    <i class="fas fa-chart-line mr-2"></i>Puedes ver tus reportes en tiempo real
+                </a>
             </div>
         </div>
+
+        <!-- SLIDE 3 -->
+        <div class="slide relative h-full">
+            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80"
+                class="absolute inset-0 w-full h-full object-cover" style="filter: brightness(0.28) saturate(1.1)"
+                alt="Gestión agrícola">
+            <div class="absolute inset-0"
+                style="background: linear-gradient(135deg, rgba(2,44,18,.75) 0%, rgba(2,13,6,.4) 100%)"></div>
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
+                <span
+                    class="inline-flex items-center gap-2 bg-blue-400/20 border border-blue-400/30 text-blue-300 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+                    <i class="fas fa-users"></i> Módulo de Trabajadores
+                </span>
+                <h1 class="text-4xl md:text-6xl font-bold mb-5 leading-tight">
+                    Tareas y nómina<br>
+                    <span class="text-blue-300">bajo control</span>
+                </h1>
+                <p class="text-lg max-w-2xl text-green-100 leading-relaxed mb-8">
+                    Asigna tareas, registra jornales y controla anticipos de tus trabajadores
+                    desde el panel de administrador o la vista móvil.
+                </p>
+                <a 
+                    class="gradient-bg text-white px-8 py-3 rounded-xl font-bold text-base shadow-xl hover:opacity-90 transition">
+                    <i class="fas fa-clipboard-check mr-2"></i>Gestionar tareas de tu finca
+                </a>
+            </div>
+        </div>
+
+        <!-- CONTROLES SLIDER -->
         <button onclick="changeSlide(-1)"
-            class="absolute left-4 top-1/2 z-20 bg-black/30 p-3 rounded-full hover:bg-black/50"><i
-                class="fas fa-chevron-left"></i></button>
+            class="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition border border-white/10">
+            <i class="fas fa-chevron-left text-sm"></i>
+        </button>
         <button onclick="changeSlide(1)"
-            class="absolute right-4 top-1/2 z-20 bg-black/30 p-3 rounded-full hover:bg-black/50"><i
-                class="fas fa-chevron-right"></i></button>
-    </section>
+            class="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 bg-black/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-black/50 transition border border-white/10">
+            <i class="fas fa-chevron-right text-sm"></i>
+        </button>
 
-    <section id="nosotros" class="py-20 max-w-7xl mx-auto px-4">
-        <div class="grid md:grid-cols-2 gap-12">
-            <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-blue-600">
-                <div class="text-blue-600 text-3xl mb-4"><i class="fas fa-bullseye"></i></div>
-                <h2 class="text-2xl font-bold mb-4">Nuestra Misión</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Proveer una herramienta tecnológica intuitiva que facilite el proceso de calificación, promoviendo
-                    la retroalimentación oportuna y el crecimiento académico continuo de nuestra comunidad educativa.
-                </p>
-            </div>
-            <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-blue-400">
-                <div class="text-blue-400 text-3xl mb-4"><i class="fas fa-eye"></i></div>
-                <h2 class="text-2xl font-bold mb-4">Nuestra Visión</h2>
-                <p class="text-gray-600 leading-relaxed">
-                    Ser el sistema de gestión académica referente a nivel nacional, reconocido por su innovación,
-                    seguridad de datos y capacidad para transformar la información en éxito escolar.
-                </p>
-            </div>
+        <!-- DOTS INDICADORES -->
+        <div class="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-2" id="dots-container">
+            <div class="dot h-2 rounded-full bg-green-400 transition-all duration-300" style="width:28px"></div>
+            <div class="dot h-2 w-2 rounded-full bg-white/40 transition-all duration-300"></div>
+            <div class="dot h-2 w-2 rounded-full bg-white/40 transition-all duration-300"></div>
         </div>
     </section>
 
-    <section id="objetivos" class="py-20 bg-gray-100">
+
+    <!-- ════════════════════════════════════════════════
+         ESTADÍSTICAS RÁPIDAS
+    ════════════════════════════════════════════════ -->
+    <section class="bg-white border-y border-green-100 py-12">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <?php
+            $stats = [
+                ['19', 'fas fa-th-large', 'green', 'Módulos del sistema'],
+                ['360°', 'fas fa-sync-alt', 'yellow', 'Gestión integral'],
+                ['PHP+MySQL', 'fas fa-database', 'blue', 'Stack tecnológico'],
+                ['📱', '', 'green', 'Vista móvil campo'],
+            ];
+            foreach ($stats as [$val, $ico, $color, $lbl]):
+                $colors = [
+                    'green' => ['bg' => 'bg-green-50', 'border' => 'border-green-200', 'text' => 'text-green-600'],
+                    'yellow' => ['bg' => 'bg-yellow-50', 'border' => 'border-yellow-200', 'text' => 'text-yellow-600'],
+                    'blue' => ['bg' => 'bg-blue-50', 'border' => 'border-blue-200', 'text' => 'text-blue-600'],
+                ];
+                $c = $colors[$color];
+                ?>
+                <div class="<?= $c['bg'] ?> border <?= $c['border'] ?> rounded-2xl p-6 text-center shadow-sm">
+                    <?php if ($ico): ?>
+                        <div class="<?= $c['text'] ?> text-3xl mb-2"><i class="<?= $ico ?>"></i></div>
+                    <?php endif; ?>
+                    <div class="<?= $c['text'] ?> text-3xl font-bold mb-1"><?= $val ?></div>
+                    <div class="text-green-700 text-xs font-semibold uppercase tracking-wide"><?= $lbl ?></div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════
+         NOSOTROS — MISIÓN Y VISIÓN
+    ════════════════════════════════════════════════ -->
+    <section id="nosotros" class="py-24 bg-white">
         <div class="max-w-7xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold">Objetivos Estratégicos</h2>
-                <div class="w-24 h-1 bg-blue-600 mx-auto mt-4"></div>
+                <span
+                    class="inline-flex items-center gap-2 bg-green-50 text-green-700 border border-green-200 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
+                    <i class="fas fa-leaf"></i> Sobre el sistema
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Misión y Visión</h2>
+                <p class="text-green-600 max-w-xl mx-auto text-sm">
+                    Construido para la realidad de las fincas cafeteras colombianas
+                </p>
             </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="text-center p-6">
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- MISIÓN -->
+                <div
+                    class="feature-card bg-green-50 border border-green-100 shadow-sm p-8 rounded-2xl border-t-4 border-t-green-500">
                     <div
-                        class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
-                        <i class="fas fa-bolt"></i>
+                        class="w-14 h-14 gradient-bg rounded-2xl flex items-center justify-center mb-5 shadow-md shadow-green-200">
+                        <i class="fas fa-bullseye text-white text-xl"></i>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Automatización</h3>
-                    <p class="text-gray-600">Reducir el tiempo de carga de notas en un 60% para los docentes.</p>
-                </div>
-                <div class="text-center p-6">
-                    <div
-                        class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3 class="font-bold text-lg mb-2">Seguridad</h3>
-                    <p class="text-gray-600">Garantizar la integridad y confidencialidad de los registros académicos.
+                    <h2 class="text-2xl font-bold text-green-800 mb-4">Nuestra Misión</h2>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Proveer una herramienta tecnológica intuitiva que facilite la gestión integral de fincas
+                        cafeteras, cubriendo desde el registro de cosechas y ventas hasta el control de inventario,
+                        tareas de trabajadores, nómina y análisis financiero. Todo en un solo sistema accesible
+                        desde cualquier dispositivo.
                     </p>
                 </div>
-                <div class="text-center p-6">
-                    <div
-                        class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
-                        <i class="fas fa-chart-line"></i>
+
+                <!-- VISIÓN -->
+                <div
+                    class="feature-card bg-green-50 border border-yellow-100 shadow-sm p-8 rounded-2xl border-t-4 border-t-yellow-400">
+                    <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 shadow-md shadow-yellow-200"
+                        style="background: linear-gradient(135deg, #eab308, #facc15)">
+                        <i class="fas fa-eye text-white text-xl"></i>
                     </div>
-                    <h3 class="font-bold text-lg mb-2">Seguimiento</h3>
-                    <p class="text-gray-600">Facilitar análisis estadísticos para detectar estudiantes en riesgo.</p>
+                    <h2 class="text-2xl font-bold text-yellow-600 mb-4">Nuestra Visión</h2>
+                    <p class="text-gray-600 leading-relaxed text-sm">
+                        Ser el sistema de gestión agrícola referente para fincas cafeteras en Huila y el eje
+                        cafetero colombiano, reconocido por su facilidad de uso, confiabilidad de datos y
+                        capacidad para transformar el trabajo en campo en información valiosa para la toma
+                        de decisiones del productor cafetero.
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="bg-gray-900 text-gray-300 py-12">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
-            <div>
-                <h4 class="text-white text-xl font-bold mb-4">EduGrade</h4>
-                <p class="text-sm">Innovación tecnológica para la educación del futuro. Tu éxito comienza con una buena
-                    gestión.</p>
+
+    <!-- ════════════════════════════════════════════════
+         MÓDULOS DEL SISTEMA
+    ════════════════════════════════════════════════ -->
+    <section id="modulos" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span
+                    class="inline-flex items-center gap-2 bg-green-100 border border-green-200 text-green-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
+                    <i class="fas fa-th-large"></i> 19 pantallas · cobertura total
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Módulos del sistema</h2>
+                <p class="text-gray-600 max-w-xl mx-auto text-sm">
+                    Cobertura completa de todos los procesos de tu finca cafetera
+                </p>
             </div>
+
+            <?php
+            $modulos = [
+                ['🌱', 'Lotes', 'Gestión de cultivos y sectores de la finca', '#22c55e'],
+                ['🌾', 'Cosechas', 'Registro por lote, calidad del grano y estado', '#a3e635'],
+                ['💰', 'Ventas', 'Historial financiero y precio de referencia', '#eab308'],
+                ['📋', 'Tareas Admin', 'Tablero Kanban para asignar labores en campo', '#84cc16'],
+                ['📱', 'Vista Móvil', 'App para trabajadores en campo sin necesidad de PC', '#38bdf8'],
+                ['📦', 'Inventario', 'Control de activos, equipos e infraestructura', '#0891b2'],
+                ['🧪', 'Insumos', 'Fertilizantes y pesticidas con alerta de stock', '#10b981'],
+                ['🦺', 'EPP', 'Dotación y elementos de protección personal', '#d97706'],
+                ['🔧', 'Herramientas', 'Registro de préstamos y devolución', '#b45309'],
+                ['💳', 'Nómina', 'Jornales, quincenas y anticipos a trabajadores', '#4f46e5'],
+                ['🏭', 'Proveedores', 'Directorio y órdenes de compra a proveedores', '#0f766e'],
+                ['🛒', 'Compras', 'Registro con actualización automática de stock', '#15803d'],
+                ['📊', 'Reportes', 'Análisis del trimestre, gráficos y exportación PDF', '#ca8a04'],
+                ['🔔', 'Notificaciones', 'Alertas automáticas de stock bajo y tareas vencidas', '#dc2626'],
+            ];
+            ?>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <?php foreach ($modulos as [$ico, $nombre, $desc, $color]): ?>
+                    <div class="mod-card bg-green-50 shadow-sm border border-green-100 rounded-2xl p-4 cursor-default">
+                        <div class="text-2xl mb-3"><?= $ico ?></div>
+                        <div class="font-bold text-xs mb-1" style="color: <?= $color ?>"><?= $nombre ?></div>
+                        <div class="text-gray-600 text-xs leading-relaxed"><?= $desc ?></div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════
+         OBJETIVOS ESTRATÉGICOS
+    ════════════════════════════════════════════════ -->
+    <section id="objetivos" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <span
+                    class="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-4">
+                    <i class="fas fa-flag"></i> Propósito del proyecto
+                </span>
+                <h2 class="text-3xl md:text-4xl font-bold text-green-800 mb-4">Objetivos Estratégicos</h2>
+                <div class="w-24 h-1 bg-green-500 mx-auto mt-2 rounded-full"></div>
+            </div>
+
+            <?php
+            $objetivos = [
+                [
+                    'fas fa-bolt',
+                    '#22c55e',
+                    'Automatización',
+                    'Reducir el tiempo de registro de cosechas, gastos e inventario en más del 60% para el administrador de la finca.'
+                ],
+                [
+                    'fas fa-shield-alt',
+                    '#eab308',
+                    'Seguridad',
+                    'Garantizar la integridad y confidencialidad de los registros productivos y financieros de la finca.'
+                ],
+                [
+                    'fas fa-chart-line',
+                    '#38bdf8',
+                    'Seguimiento',
+                    'Facilitar el análisis financiero mensual y trimestral para detectar oportunidades de mejora en producción.'
+                ],
+            ];
+            ?>
+            <div class="grid md:grid-cols-3 gap-8">
+                <?php foreach ($objetivos as [$icon, $color, $titulo, $texto]): ?>
+                    <div class="feature-card text-center p-8 bg-green-50 border border-green-100 rounded-2xl shadow-sm">
+                        <div class="w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-5 shadow-md"
+                            style="background: linear-gradient(135deg, <?= $color ?>dd, <?= $color ?>)">
+                            <i class="<?= $icon ?>"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-3" style="color: <?= $color ?>"><?= $titulo ?></h3>
+                        <p class="text-gray-600 text-sm leading-relaxed"><?= $texto ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════
+         CTA FINAL
+    ════════════════════════════════════════════════ -->
+    <section class="py-24 bg-green-50 border-t border-green-100">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <div class="text-6xl mb-6">🌿</div>
+            <h2 class="text-3xl md:text-5xl font-bold text-green-800 mb-5 leading-tight">
+                ¿Listo para gestionar<br>tu finca de manera inteligente?
+            </h2>
+            <p class="text-green-700 text-base mb-10 max-w-xl mx-auto leading-relaxed">
+                Accede al sistema y comienza a registrar cosechas, controlar inventario y gestionar
+                a tu equipo de trabajo desde cualquier dispositivo.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="../views/usuarios/login.php"
+                    class="gradient-bg text-white px-10 py-4 rounded-2xl font-bold text-base shadow-lg shadow-green-200 hover:opacity-90 transition">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Ingresar al sistema
+                </a>
+                <a href="../views/usuarios/registre.php"
+                    class="bg-white border-2 border-green-200 text-green-700 px-10 py-4 rounded-2xl font-bold text-base hover:bg-green-50 transition shadow-sm">
+                    <i class="fas fa-user-plus mr-2"></i>Crear cuenta
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ════════════════════════════════════════════════
+         FOOTER
+    ════════════════════════════════════════════════ -->
+    <footer class="bg-white text-gray-500 py-16 border-t border-green-200">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
+
+            <!-- Columna 1 -->
             <div>
-                <h4 class="text-white font-bold mb-4">Enlaces Rápidos</h4>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 gradient-bg rounded-xl flex items-center justify-center shadow-md">
+                        <i class="fas fa-seedling text-white text-sm"></i>
+                    </div>
+                    <span class="text-green-800 font-bold text-base">SystemCOFF 360</span>
+                </div>
+                <p class="text-sm leading-relaxed mb-4">
+                    Sistema integral de gestión para fincas cafeteras. Desarrollado por
+                    <strong class="text-green-700">JD Solutions</strong>
+                </p>
+                <span
+                    class="inline-block bg-green-50 border border-green-200 text-green-600 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+
+                </span>
+            </div>
+
+            <!-- Columna 2 -->
+            <div>
+                <h4 class="text-green-800 font-bold mb-5">Módulos principales</h4>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-blue-400">Soporte Técnico</a></li>
-                    <li><a href="#" class="hover:text-blue-400">Manual de Usuario</a></li>
-                    <li><a href="#" class="hover:text-blue-400">Política de Privacidad</a></li>
+                    <?php foreach ([
+                        ['fas fa-leaf', 'text-green-600', 'Lotes y Cosechas'],
+                        ['fas fa-dollar-sign', 'text-yellow-600', 'Ventas y Reportes'],
+                        ['fas fa-users', 'text-blue-500', 'Tareas y Nómina'],
+                        ['fas fa-boxes', 'text-green-600', 'Inventario e Insumos'],
+                        ['fas fa-hard-hat', 'text-orange-500', 'EPP y Herramientas'],
+                        ['fas fa-truck', 'text-teal-500', 'Proveedores y Compras'],
+                    ] as [$ico, $icolor, $txt]): ?>
+                        <li class="flex items-center gap-2 text-gray-600">
+                            <i class="<?= $ico ?> <?= $icolor ?> text-xs w-4"></i><?= $txt ?>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
+
+            <!-- Columna 3 -->
             <div>
-                <h4 class="text-white font-bold mb-4">Contacto</h4>
-                <p class="text-sm"><i class="fas fa-envelope mr-2"></i> soporte@edugrade.com</p>
-                <p class="text-sm mt-2"><i class="fas fa-phone mr-2"></i> +1 234 567 890</p>
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-xl hover:text-white"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-xl hover:text-white"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="text-xl hover:text-white"><i class="fab fa-linkedin"></i></a>
+                <h4 class="text-green-800 font-bold mb-5">Contacto</h4>
+                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
+                    <i class="fas fa-map-marker-alt text-green-600"></i> Tesalia, Huila – Colombia
+                </p>
+                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
+                    <i class="fas fa-envelope text-green-600"></i> soporte@systemcoff.com
+                </p>
+                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
+                    <i class="fas fa-phone text-green-600"></i> +57 3209737168
+                </p>
+                <div class="flex space-x-3 mt-5">
+                    <a href="#"
+                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
+                        <i class="fab fa-facebook text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
+                        <i class="fab fa-whatsapp text-sm"></i>
+                    </a>
+                    <a href="#"
+                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
+                        <i class="fab fa-github text-sm"></i>
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="border-t border-gray-800 mt-12 pt-8 text-center text-xs">
-            &copy; 2026 EduGrade Sistema de Calificación. Todos los derechos reservados.
+
+        <div class="border-t border-green-200 mt-14 pt-8 text-center text-xs text-gray-500">
+            &copy; <?= date('Y') ?> <strong class="text-green-700">SystemCOFF 360</strong> — Sistema de Gestión de
+            Fincas Cafeteras.
+            Desarrollado por <strong class="text-green-700">JD Solutions</strong>. Todos los derechos reservados.
         </div>
     </footer>
 
+
     <script>
+        // ── SLIDER ────────────────────────────────────────────
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('#dots-container .dot');
 
         function changeSlide(direction) {
+            // Reset dot actual
+            dots[currentSlide].style.width = '8px';
+            dots[currentSlide].style.backgroundColor = 'rgba(255,255,255,0.4)';
+
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + direction + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
+
+            // Activar dot nuevo
+            dots[currentSlide].style.width = '28px';
+            dots[currentSlide].style.backgroundColor = '#22c55e';
         }
 
-        // Auto slide cada 5 segundos
-        setInterval(() => changeSlide(1), 5000);
+        // Auto slide cada 6 segundos
+        setInterval(() => changeSlide(1), 6000);
+
+        // Dots clickeables
+        dots.forEach((dot, i) => {
+            dot.style.cursor = 'pointer';
+            dot.addEventListener('click', () => {
+                const dir = i > currentSlide ? 1 : -1;
+                while (currentSlide !== i) changeSlide(dir);
+            });
+        });
+
+        // ── MOBILE MENU ───────────────────────────────────────
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Cerrar mobile menu al hacer click en link
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+        });
     </script>
+
 </body>
 
 </html>

@@ -1,119 +1,158 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../Config/database.php';
 require_once __DIR__ . '/../models/Usuario.php';
 
-class AuthController {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: ../views/usuarios/login.php');
+    exit;
+}
 
-    public function login() {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: ../views/usuarios/login.php");
-            exit;
-        }
+if (isset($_POST['logout'])) {
+    $_SESSION = [];
 
-        $email = trim($_POST['email'] ?? '');
-        $password = trim($_POST['password'] ?? '');
+    if (ini_get('session.use_cookies')) {
+        $params = session_get_cookie_params();
 
-        if (empty($email) || empty($password)) {
-            $_SESSION['alert'] = [
-                'icon' => 'warning',
-                'title' => 'Campos incompletos',
-                'text' => 'Debe ingresar correo y contraseña'
-            ];
-            header("Location: ../views/usuarios/login.php");
-            exit;
-        }
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
+    }
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['alert'] = [
-                'icon' => 'error',
-                'title' => 'Correo inválido',
-                'text' => 'Ingrese un correo electrónico válido'
-            ];
-            header("Location: ../views/usuarios/login.php");
-            exit;
-        }
+    session_destroy();
 
-        $database = new Database();
-        $db = $database->conectar();
+    header('Location: ../views/usuarios/login.php');
+    exit;
+}
 
-        $usuarioModel = new Usuario($db);
-        $usuario = $usuarioModel->obtenerPorEmail($email);
+$email = strtolower(trim($_POST['email'] ?? ''));
+$password = $_POST['password'] ?? '';
 
-        if (!$usuario) {
-            $_SESSION['alert'] = [
-                'icon' => 'error',
-                'title' => 'Usuario no encontrado',
-                'text' => 'El correo no está registrado o está inactivo'
-            ];
-            header("Location: ../views/usuarios/login.php");
-            exit;
-        }
+if ($email === '' || $password === '') {
+    $_SESSION['alert'] = [
+        'icon'  => 'warning',
+        'title' => 'Campos incompletos',
+        'text'  => 'Por favor ingresa tu correo y contraseña.'
+    ];
 
-        if (!password_verify($password, $usuario['password_hash'])) {
-            $_SESSION['alert'] = [
-                'icon' => 'error',
-                'title' => 'Contraseña incorrecta',
-                'text' => 'Verifique sus credenciales'
-            ];
-            header("Location: ../views/usuarios/login.php");
-            exit;
-        }
+    header('Location: ../views/usuarios/login.php');
+    exit;
+}
 
-        session_regenerate_id(true);
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $_SESSION['alert'] = [
+        'icon'  => 'warning',
+        'title' => 'Correo inválido',
+        'text'  => 'El formato del correo electrónico no es válido.'
+    ];
 
-        $_SESSION['usuario'] = [
-            'id_usuario' => $usuario['id_usuario'],
-            'nombres' => $usuario['nombres'],
-            'apellidos' => $usuario['apellidos'],
-            'email' => $usuario['email'],
-            'rol' => $usuario['rol']
+    header('Location: ../views/usuarios/login.php');
+    exit;
+}
+
+try {
+    $database = new Database();
+    $db = $database->conectar();
+
+    $usuarioModel = new Usuario($db);
+    $usuario = $usuarioModel->obtenerPorEmail($email);
+
+    if (!$usuario || !password_verify($password, $usuario['contrasena'])) {
+        sleep(1);
+
+        $_SESSION['alert'] = [
+            'icon'  => 'error',
+            'title' => 'Credenciales incorrectas',
+            'text'  => 'El correo o la contraseña no son correctos.'
         ];
 
-        switch ($usuario['rol']) {
-            case 'administrador':
-                header("Location: ../views/dashboard/admin_dashboard.php");
-                exit;
-
-            case 'docente':
-                header("Location: ../views/dashboard/docente_dashboard.php");
-                exit;
-
-            case 'estudiante':
-                header("Location: ../views/dashboard/estudiante.php");
-                exit;
-
-            case 'acudiente':
-                header("Location: ../views/dashboard/acudiente.php");
-                exit;
-
-            default:
-                $_SESSION['alert'] = [
-                    'icon' => 'error',
-                    'title' => 'Rol no válido',
-                    'text' => 'No se pudo determinar el acceso del usuario'
-                ];
-                header("Location: ../views/usuarios/login.php");
-                exit;
-        }
-    }
-
-    public function logout() {  #cerrar sesion
-        session_unset();
-        session_destroy();
-        header("Location: ../views/usuarios/login.php");
+        header('Location: ../views/usuarios/login.php');
         exit;
     }
+
+    if (strtolower(trim($usuario['estado'])) !== 'activo') {
+        $_SESSION['alert'] = [
+            'icon'  => 'error',
+            'title' => 'Cuenta desactivada',
+            'text'  => 'Tu cuenta está desactivada. Contacta al administrador.'
+        ];
+
+        header('Location: ../views/usuarios/login.php');
+        exit;
+    }
+
+    session_regenerate_id(true);
+
+    $_SESSION['usuario'] = [
+        'id'         => $usuario['id_usuario'],
+        'id_usuario' => $usuario['id_usuario'],
+        'id_rol'     => $usuario['id_rol'],
+        'nombre'     => $usuario['nombre'],
+        'nombres'    => $usuario['nombre'],
+        'apellidos'  => '',
+        'email'      => $usuario['correo'],
+        'correo'     => $usuario['correo'],
+        'rol'        => strtolower(trim($usuario['rol']))
+    ];
+
+    $usuarioModel->actualizarUltimoAcceso($usuario['id_usuario']);
+
+    if (!empty($_POST['remember'])) {
+        setcookie(
+            'sc360_uid',
+            $usuario['id_usuario'],
+            time() + (7 * 86400),
+            '/',
+            '',
+            false,
+            true
+        );
+    }
+
+    $_SESSION['alert'] = [
+        'icon'  => 'success',
+        'title' => '¡Bienvenido!',
+        'text'  => 'Hola ' . $usuario['nombre'] . ', acceso exitoso.'
+    ];
+
+    switch (strtolower(trim($usuario['rol']))) {
+        case 'administrador':
+        case 'admin':
+            header('Location: ../views/dashboard/admin.php');
+            break;
+
+        case 'trabajador':
+            header('Location: ../views/dashboard/trabajador.php');
+            break;
+
+        default:
+            $_SESSION['alert'] = [
+                'icon'  => 'error',
+                'title' => 'Rol no válido',
+                'text'  => 'Tu usuario no tiene un rol válido asignado.'
+            ];
+
+            header('Location: ../views/usuarios/login.php');
+            break;
+    }
+
+    exit;
+
+} catch (Throwable $e) {
+    echo "<h2>Error en AuthController.php</h2>";
+    echo "<b>Mensaje:</b> " . htmlspecialchars($e->getMessage()) . "<br>";
+    echo "<b>Archivo:</b> " . htmlspecialchars($e->getFile()) . "<br>";
+    echo "<b>Línea:</b> " . htmlspecialchars($e->getLine()) . "<br>";
+    exit;
 }
-
-$controller = new AuthController();
-
-$accion = $_GET['accion'] ?? 'login';
-
-if ($accion === 'logout') {
-    $controller->logout();
-} else {
-    $controller->login();
-}
-?>

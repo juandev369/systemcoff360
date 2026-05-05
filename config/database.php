@@ -3,7 +3,7 @@ class Database
 {
     private $host = "127.0.0.1"; // Permiso Host 
     private $port = "3320"; // ← ESTE ES EL PUERTO DE TU MYSQL
-    private $db_name = "bdcalificaciones"; // Permiso Base de Datos
+    private $db_name = "systemcoff360"; // Permiso Base de Datos
     private $username = "root"; // Permiso Usuario
     private $password = ""; // Permiso Contraseña
 
