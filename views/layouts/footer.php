@@ -31,5 +31,6 @@
     </p>
 </footer>
 
+    <?php include __DIR__ . '/assistant_widget.php'; ?>
 </body>
 </html>

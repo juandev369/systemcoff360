@@ -1,1 +1,0 @@
-La logica de eliminar en el dashboard admin no me esta funcionando no esta eliminando y tambien quiero aprovechar que las alertas tenga sweetalert2

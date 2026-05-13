@@ -54,13 +54,34 @@ $tareasFinalizadas = valorSeguro(
 <head>
     <meta charset="UTF-8">
     <title>Panel Trabajador — SystemCOFF 360</title>
+    <link rel="shortcut icon" type="image/png" href="../../img/ico.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .glass {
+            background: rgba(255,255,255,.92);
+            backdrop-filter: blur(14px);
+        }
+    </style>
 </head>
 
 <body class="min-h-screen bg-green-50">
+
+<?php if (isset($_SESSION['alert'])): ?>
+    <?php $alert = $_SESSION['alert']; unset($_SESSION['alert']); ?>
+    <script>
+        Swal.fire({
+            icon: '<?= htmlspecialchars($alert['icon'] ?? 'success') ?>',
+            title: '<?= htmlspecialchars($alert['title'] ?? '') ?>',
+            text: '<?= htmlspecialchars($alert['text'] ?? '') ?>',
+            confirmButtonColor: '#16a34a'
+        });
+    </script>
+<?php endif; ?>
 
 <div class="flex min-h-screen">
 
@@ -75,26 +96,34 @@ $tareasFinalizadas = valorSeguro(
             </div>
         </div>
 
+        <?php $paginaActual = basename($_SERVER['PHP_SELF']); ?>
         <nav class="space-y-2 flex-1">
-            <a href="trabajador.php" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-500/20">
+
+            <a href="trabajador.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'trabajador.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
                 <i class="fas fa-home w-5"></i>
                 Inicio
             </a>
 
-            <a href="tarea.php" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+            <a href="tarea_trabajador.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'tarea_trabajador.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
                 <i class="fas fa-clipboard-list w-5"></i>
                 Mis tareas
             </a>
 
-            <a href="../trabajador/historial.php" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
-                <i class="fas fa-history w-5"></i>
+            <a href="../dashboard/historial.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'historial.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+               <i class="fas fa-history w-5"></i>
                 Historial
             </a>
 
-            <a href="../trabajador/perfil.php" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
+            <a href="perfil.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'perfil.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
                 <i class="fas fa-user w-5"></i>
                 Mi perfil
             </a>
+
+            <a href="asistente.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'asistente.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+                <i class="fas fa-robot w-5"></i>
+                Asistente AI
+            </a>
+
         </nav>
 
         <form action="../../controllers/AuthController.php" method="POST">
@@ -108,18 +137,31 @@ $tareasFinalizadas = valorSeguro(
 
     <main class="flex-1 p-4 md:p-8">
 
-        <header class="bg-white rounded-3xl p-6 shadow-sm border border-green-100 mb-8">
-            <p class="text-green-700 font-bold uppercase tracking-widest text-xs mb-2">
-                Zona del trabajador
-            </p>
+        <!-- HEADER -->
+        <header class="glass rounded-3xl p-6 shadow-sm border border-green-100 mb-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                <div>
+                    <p class="text-green-700 font-bold uppercase tracking-widest text-xs mb-2">
+                        Zona del trabajador
+                    </p>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-green-950">
+                        Bienvenido, <?= htmlspecialchars($usuarioSesion['nombre'] ?? 'Trabajador') ?>
+                    </h2>
+                    <p class="text-gray-500 mt-2">
+                        Aquí puedes consultar tus tareas asignadas, revisar tu historial y actualizar tu información.
+                    </p>
+                </div>
 
-            <h2 class="text-3xl md:text-4xl font-extrabold text-green-950">
-                Bienvenido, <?= htmlspecialchars($usuarioSesion['nombre'] ?? 'Trabajador') ?>
-            </h2>
-
-            <p class="text-gray-500 mt-2">
-                Aquí puedes consultar tus tareas asignadas, revisar tu historial y actualizar tu información.
-            </p>
+                <div class="flex items-center gap-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-bold text-gray-700"><?= date('d/m/Y') ?></p>
+                        <p class="text-xs text-gray-500">Panel activo</p>
+                    </div>
+                    <div class="w-14 h-14 rounded-2xl bg-green-600 text-white flex items-center justify-center shadow-lg">
+                        <i class="fas fa-user text-xl"></i>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
@@ -181,5 +223,6 @@ $tareasFinalizadas = valorSeguro(
     </main>
 </div>
 
+    <?php include __DIR__ . '/../layouts/assistant_widget.php'; ?>
 </body>
 </html>

@@ -28,9 +28,9 @@ class Inventario
     {
         try {
             $sql = "INSERT INTO insumo
-                    (nombre, tipo, unidad, stock_actual, stock_minimo, precio_unidad)
+                    (nombre, tipo, unidad, stock_actual, stock_minimo, precio_unidad, imagen_url)
                     VALUES
-                    (:nombre, :tipo, :unidad, :stock_actual, :stock_minimo, :precio_unidad)";
+                    (:nombre, :tipo, :unidad, :stock_actual, :stock_minimo, :precio_unidad, :imagen_url)";
 
             $stmt = $this->conn->prepare($sql);
 
@@ -40,7 +40,8 @@ class Inventario
                 ':unidad' => trim($datos['unidad']),
                 ':stock_actual' => $datos['stock_actual'],
                 ':stock_minimo' => $datos['stock_minimo'],
-                ':precio_unidad' => $datos['precio_unidad']
+                ':precio_unidad' => $datos['precio_unidad'],
+                ':imagen_url' => trim($datos['imagen_url'] ?? '')
             ]);
 
         } catch (Exception $e) {
@@ -119,16 +120,17 @@ class Inventario
     {
         try {
             $sql = "INSERT INTO herramienta
-                    (nombre, descripcion, estado, fecha_registro)
+                    (nombre, descripcion, estado, fecha_registro, imagen_url)
                     VALUES
-                    (:nombre, :descripcion, 'disponible', :fecha_registro)";
+                    (:nombre, :descripcion, 'disponible', :fecha_registro, :imagen_url)";
 
             $stmt = $this->conn->prepare($sql);
 
             return $stmt->execute([
                 ':nombre' => trim($datos['nombre']),
                 ':descripcion' => trim($datos['descripcion']),
-                ':fecha_registro' => $datos['fecha_registro']
+                ':fecha_registro' => $datos['fecha_registro'],
+                ':imagen_url' => trim($datos['imagen_url'] ?? '')
             ]);
 
         } catch (Exception $e) {
@@ -251,9 +253,9 @@ class Inventario
     {
         try {
             $sql = "INSERT INTO epp
-                    (nombre, descripcion, cantidad_total, stock_disponible, talla)
+                    (nombre, descripcion, cantidad_total, stock_disponible, talla, imagen_url)
                     VALUES
-                    (:nombre, :descripcion, :cantidad_total, :stock_disponible, :talla)";
+                    (:nombre, :descripcion, :cantidad_total, :stock_disponible, :talla, :imagen_url)";
 
             $stmt = $this->conn->prepare($sql);
 
@@ -262,7 +264,8 @@ class Inventario
                 ':descripcion' => trim($datos['descripcion']),
                 ':cantidad_total' => $datos['cantidad_total'],
                 ':stock_disponible' => $datos['stock_disponible'],
-                ':talla' => trim($datos['talla'])
+                ':talla' => trim($datos['talla']),
+                ':imagen_url' => trim($datos['imagen_url'] ?? '')
             ]);
 
         } catch (Exception $e) {

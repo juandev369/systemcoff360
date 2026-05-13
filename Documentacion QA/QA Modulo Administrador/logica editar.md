@@ -1,3 +1,0 @@
-La logica de editar se encuentra en la la tabla, en acciones y alli se encuentra el boton editar (Modal)
-el Java escript es el que me filtra y abre los datos del formulario modal de editar por cada uno de sus atributos.
-Para el cambio o actualizacion de datos, el formulario en action esta conectado con el controlador AdminUsuarioController.php, el controlador contiene una funcion llamada editar, llamando lo name de los campos del formulario editar, cabe recordar que este controlador esta conectado con el permiso a la base de datos dabase.php y el modelo o tabla usuario.php por eso el realizar el cambio, en la misma funcion de editar tiene redireccionamiento para que quede en la misma vista admin.php

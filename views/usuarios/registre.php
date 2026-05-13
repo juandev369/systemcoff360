@@ -16,86 +16,70 @@ unset($_SESSION['alert']);
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #14532d 0%, #16a34a 60%, #22c55e 100%);
+            background: linear-gradient(135deg, #14532d 0%, #16a34a 100%);
         }
 
-        /* Inputs */
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Input styles */
         .field-input {
             background: #ffffff;
-            border: 1.5px solid #bbf7d0;
-            color: #166534;
-            transition: border-color .15s, background .15s;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.2s ease;
         }
         .field-input:focus {
             outline: none;
             border-color: #22c55e;
-            background: #f0fdf4;
-            box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+            transform: translateY(-1px);
         }
-        .field-input::placeholder { color: #9ca3af; }
 
-        /* Strength bars */
-        .str-bar { height:4px;border-radius:4px;transition:background .3s; }
-
-        /* Btn */
         .btn-primary {
             background: linear-gradient(135deg, #15803d, #22c55e);
-            transition: all .2s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(34,197,94,.4);
-            opacity: .92;
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 24px rgba(34, 197, 94, 0.3);
         }
-
-        /* Hint item */
-        .hint-ok  { color:#22c55e; }
-        .hint-ok  i { color:#22c55e !important; font-size:10px !important; }
-        .hint-off { color:#6b7280; }
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-6 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:32px_32px]">
 
-    <!-- GRID DE FONDO -->
-    <div class="fixed inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(34,197,94,.025) 48px,rgba(34,197,94,.025) 49px),repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(34,197,94,.025) 48px,rgba(34,197,94,.025) 49px);z-index:0"></div>
-
-    <div class="w-full max-w-2xl relative z-10 my-8">
+    <div class="w-full max-w-2xl relative z-10 animate-up my-12">
 
         <!-- CARD -->
-        <div class="bg-green-50 rounded-3xl shadow-xl overflow-hidden"
-             style="border: 1px solid rgba(34,197,94,.1)">
+        <div class="bg-white rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden border border-gray-100">
 
             <!-- HEADER -->
-            <div class="bg-green-50/50 px-8 py-10 text-center border-b border-green-100">
-                <!-- Logo -->
-                <div class="flex items-center justify-center gap-3 mb-5">
-                    <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center shadow-md">
-                        <i class="fas fa-seedling text-white"></i>
+            <div class="gradient-bg px-8 py-14 text-center text-white relative overflow-hidden">
+                <!-- Decoración -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32 blur-3xl"></div>
+
+                <div class="relative z-10">
+                    <!-- Logo -->
+                    <div class="flex items-center justify-center gap-4 mb-10">
+                        <div class="w-11 h-11 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30">
+                            <i class="fas fa-seedling text-white text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-black tracking-tighter">SystemCOFF 360</span>
                     </div>
-                    <span class="text-green-800 font-bold text-base">SystemCOFF 360</span>
-                </div>
 
-                <!-- Icono principal -->
-                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm relative z-10 bg-white border border-green-100">
-                    <i class="fas fa-user-plus text-2xl text-green-600"></i>
-                </div>
-
-                <div class="inline-block bg-green-100/60 border border-green-200 rounded-2xl px-6 py-2.5 mb-3 shadow-sm relative z-10">
-                    <h2 class="text-2xl font-bold text-green-800 m-0">Crear cuenta</h2>
-                </div>
-                <p class="text-sm text-gray-600 relative z-10 mt-1">
-                    Regístrate para acceder al sistema de gestión de la finca
-                </p>
-
-                <!-- Progress dots -->
-                <div class="flex justify-center gap-2 mt-5 relative z-10">
-                    <div class="w-5 h-2 rounded-full bg-green-500" id="dot-1"></div>
-                    <div class="w-5 h-2 rounded-full bg-green-500" id="dot-2"></div>
-                    <div class="w-2  h-2 rounded-full bg-gray-300" id="dot-3"></div>
+                    <h2 class="text-4xl font-black mb-4 tracking-tight">Únete a la Revolución</h2>
+                    <p class="text-white/80 font-medium max-w-sm mx-auto leading-relaxed">
+                        Crea tu cuenta hoy mismo y transforma la gestión de tu finca cafetera.
+                    </p>
                 </div>
             </div>
 
@@ -118,7 +102,7 @@ unset($_SESSION['alert']);
                                 Nombres <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                     <i class="fas fa-user text-sm"></i>
                                 </span>
                                 <input type="text" name="nombres" required maxlength="100"
@@ -132,7 +116,7 @@ unset($_SESSION['alert']);
                                 Apellidos <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                     <i class="fas fa-user-tag text-sm"></i>
                                 </span>
                                 <input type="text" name="apellidos" required maxlength="100"
@@ -157,7 +141,7 @@ unset($_SESSION['alert']);
                             Correo electrónico <span class="text-red-500">*</span>
                         </label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                 <i class="fas fa-envelope text-sm"></i>
                             </span>
                             <input type="email" name="email" required maxlength="150"
@@ -173,7 +157,7 @@ unset($_SESSION['alert']);
                                 Teléfono <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                     <i class="fas fa-phone text-sm"></i>
                                 </span>
                                 <input type="text" name="telefono" required maxlength="30"
@@ -200,7 +184,7 @@ unset($_SESSION['alert']);
                                 Contraseña <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                     <i class="fas fa-lock text-sm"></i>
                                 </span>
                                 <input type="password" name="password" id="pass1" required
@@ -208,7 +192,7 @@ unset($_SESSION['alert']);
                                        class="field-input w-full pl-10 pr-11 py-3 rounded-xl text-sm"
                                        oninput="checkStrength(this.value)">
                                 <button type="button" onclick="togglePass('pass1','eye1')"
-                                        class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 text-sm hover:text-green-600 transition">
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 text-sm hover:text-green-600 transition z-10">
                                     <i class="fas fa-eye" id="eye1"></i>
                                 </button>
                             </div>
@@ -230,7 +214,7 @@ unset($_SESSION['alert']);
                                 Confirmar contraseña <span class="text-red-500">*</span>
                             </label>
                             <div class="relative">
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
+                                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400 z-10 pointer-events-none">
                                     <i class="fas fa-check-double text-sm"></i>
                                 </span>
                                 <input type="password" name="confirmar_password" id="pass2" required
@@ -238,7 +222,7 @@ unset($_SESSION['alert']);
                                        class="field-input w-full pl-10 pr-11 py-3 rounded-xl text-sm"
                                        oninput="checkMatch()">
                                 <button type="button" onclick="togglePass('pass2','eye2')"
-                                        class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 text-sm hover:text-green-600 transition">
+                                        class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 text-sm hover:text-green-600 transition z-10">
                                     <i class="fas fa-eye" id="eye2"></i>
                                 </button>
                             </div>
@@ -267,44 +251,38 @@ unset($_SESSION['alert']);
                 </div>
 
                 <!-- TÉRMINOS -->
-                <div class="mb-7 flex items-start gap-3">
+                <div class="mb-10 flex items-start gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
                     <div class="flex items-center h-5 mt-0.5 flex-shrink-0">
                         <input id="terms" type="checkbox" name="terms" required
-                               class="h-4 w-4 rounded border-gray-300" style="accent-color:#22c55e">
+                               class="w-5 h-5 rounded-lg border-gray-300 text-green-600 focus:ring-green-500/20">
                     </div>
-                    <label for="terms" class="text-sm text-gray-600 leading-relaxed">
-                        Acepto los
-                        <a href="#" class="text-green-600 font-semibold hover:underline">términos de servicio</a>
-                        y la política de tratamiento de datos de SystemCOFF 360. Entiendo que mi información será
-                        utilizada únicamente para la gestión de la finca.
+                    <label for="terms" class="text-xs text-gray-500 leading-relaxed font-medium">
+                        Acepto los <a href="#" class="text-green-600 font-black hover:text-green-700 transition-colors">términos de servicio</a> y la política de privacidad de SystemCOFF 360.
                     </label>
                 </div>
 
                 <!-- SUBMIT -->
                 <button type="submit" id="submit-btn"
-                        class="btn-primary w-full text-white font-bold py-4 rounded-xl text-sm shadow-xl shadow-green-900/20">
-                    <i class="fas fa-user-plus mr-2"></i> Crear mi cuenta
+                        class="btn-primary w-full py-5 rounded-2xl text-white font-black text-base shadow-xl tracking-tight">
+                    Crear Cuenta Ahora
                 </button>
 
-                <!-- Link login -->
-                <div class="mt-6 text-center flex flex-col gap-2">
-                    <p class="text-sm text-gray-600">
-                        ¿Ya tienes cuenta?
-                        <a href="login.php" class="text-green-600 font-bold hover:underline ml-1">
-                            Iniciar sesión
-                        </a>
+                <!-- Links -->
+                <div class="mt-10 text-center">
+                    <p class="text-sm font-bold text-gray-400">
+                        ¿Ya tienes una cuenta? 
+                        <a href="login.php" class="text-green-600 hover:text-green-700 font-black ml-1">Inicia sesión</a>
                     </p>
-                    <a href="../../index.php" class="text-xs text-gray-500 hover:text-green-600 transition">
-                        <i class="fas fa-arrow-left mr-1"></i> Volver al inicio
+                    <a href="../../public/index.php" class="inline-flex items-center gap-2 mt-8 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition-colors">
+                        <i class="fas fa-arrow-left"></i> Volver al Inicio
                     </a>
                 </div>
             </form>
 
             <!-- FOOTER CARD -->
-            <div class="px-8 py-5 text-center border-t border-green-100 bg-green-50/50">
-                <p class="text-xs text-gray-500">
-                    SystemCOFF 360 v2.0 · <strong class="text-green-700">JD Solutions</strong> ·
-                    
+            <div class="px-8 py-6 text-center border-t border-gray-50 bg-gray-50/30">
+                <p class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-black">
+                    Desarrollado por JD Solutions
                 </p>
             </div>
         </div>
@@ -433,6 +411,8 @@ unset($_SESSION['alert']);
             }
         });
     </script>
+
+    <?php include __DIR__ . '/../layouts/assistant_widget.php'; ?>
 
 </body>
 </html>

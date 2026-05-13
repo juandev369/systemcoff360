@@ -1,0 +1,49 @@
+================================================================================
+ESTRUCTURA DEL SISTEMA - SYSTEMCOFF 360 (MODELO-VISTA-CONTROLADOR)
+================================================================================
+
+Este documento describe la organización del código siguiendo el patrón de diseño 
+MVC (Model-View-Controller) para garantizar un sistema limpio y escalable.
+
+1. ESTRUCTURA DE DIRECTORIOS
+--------------------------------------------------------------------------------
+/config      -> Archivos de configuración (Base de datos, constantes).
+/controllers -> Lógica de negocio y control de flujo. Recibe datos de la vista,
+                consulta al modelo y redirige o renderiza.
+/models      -> Gestión de datos y consultas a la base de datos SQL.
+/views       -> Interfaz de usuario (HTML/CSS/JS). Solo lógica de presentación.
+/public      -> Punto de entrada público (index.php, imágenes, recursos).
+/sql         -> Scripts de base de datos.
+/vendor      -> Dependencias de Composer.
+
+2. FLUJO DE DATOS (MVC)
+--------------------------------------------------------------------------------
+1. USUARIO interactúa con una VISTA (ej: Formulario de Login).
+2. La VISTA envía la petición (POST/GET) al CONTROLADOR correspondiente.
+3. El CONTROLADOR valida los datos y solicita información al MODELO.
+4. El MODELO realiza las operaciones en la Base de Datos y devuelve resultados.
+5. El CONTROLADOR recibe los resultados y decide qué VISTA mostrar al usuario.
+
+3. PROCESO DE LOGIN (EJEMPLO DETALLADO)
+--------------------------------------------------------------------------------
+- VISTA: /views/usuarios/login.php
+  Contiene el formulario que envía 'email' y 'password'.
+
+- CONTROLADOR: /controllers/AuthController.php (Clase AuthController)
+  - Recibe los datos del formulario.
+  - Instancia el modelo 'Usuario'.
+  - Llama a 'usuarioModel->obtenerPorEmail()'.
+  - Verifica la contraseña con password_verify().
+  - Inicia la sesión y redirige al Dashboard según el ROL.
+
+- MODELO: /models/Usuario.php (Clase Usuario)
+  - Contiene la consulta SQL: "SELECT * FROM usuario WHERE correo = :correo".
+  - Devuelve los datos del usuario si existe.
+
+4. BENEFICIOS DE ESTA ORGANIZACIÓN
+--------------------------------------------------------------------------------
+- Separación de intereses: El código SQL no se mezcla con el HTML.
+- Reutilización: Varios controladores pueden usar el mismo modelo.
+- Mantenibilidad: Es más fácil encontrar y corregir errores en cada capa.
+================================================================================
+Documentación generada por Antigravity AI.

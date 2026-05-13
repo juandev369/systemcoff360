@@ -16,240 +16,174 @@ unset($_SESSION['alert']);
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
 
         .gradient-bg {
-            background: linear-gradient(135deg, #14532d 0%, #16a34a 60%, #22c55e 100%);
+            background: linear-gradient(135deg, #14532d 0%, #16a34a 100%);
         }
 
         /* Panel izquierdo */
         .left-panel {
-            background: linear-gradient(150deg, #041f0a 0%, #062910 60%, #031207 100%);
+            background: linear-gradient(160deg, #064e3b 0%, #16a34a 100%);
             position: relative;
             overflow: hidden;
         }
-        .left-panel::before {
-            content: '';
-            position: absolute;
-            width: 380px; height: 380px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(34,197,94,.1), transparent 65%);
-            top: -90px; right: -70px;
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .left-panel::after {
-            content: '';
-            position: absolute;
-            width: 240px; height: 240px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(234,179,8,.07), transparent 65%);
-            bottom: -60px; left: -40px;
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        .animate-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
         /* Input styles */
         .field-input {
             background: #ffffff;
-            border: 1.5px solid #bbf7d0;
-            color: #166534;
-            transition: border-color .15s, background .15s;
+            border: 1.5px solid #e2e8f0;
+            transition: all 0.2s ease;
         }
         .field-input:focus {
             outline: none;
             border-color: #22c55e;
-            background: #f0fdf4;
-            box-shadow: 0 0 0 3px rgba(34,197,94,.12);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+            transform: translateY(-1px);
         }
-        .field-input::placeholder { color: #9ca3af; }
 
-        /* Botón principal */
         .btn-primary {
             background: linear-gradient(135deg, #15803d, #22c55e);
-            transition: all .2s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(34,197,94,.4);
-            opacity: .92;
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 24px rgba(34, 197, 94, 0.3);
         }
-
-        /* Feature dots */
-        .feat-dot       { width:6px;height:6px;border-radius:50%;background:#22c55e;box-shadow:0 0 7px rgba(34,197,94,.5);flex-shrink:0; }
-        .feat-dot.gold  { background:#eab308;box-shadow:0 0 7px rgba(234,179,8,.4); }
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex items-center justify-center p-6 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:32px_32px]">
 
-    <!-- GRID DE FONDO -->
-    <div class="fixed inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(0deg,transparent,transparent 48px,rgba(34,197,94,.025) 48px,rgba(34,197,94,.025) 49px),repeating-linear-gradient(90deg,transparent,transparent 48px,rgba(34,197,94,.025) 48px,rgba(34,197,94,.025) 49px);z-index:0"></div>
-
-    <div class="w-full max-w-4xl relative z-10">
+    <div class="w-full max-w-5xl relative z-10 animate-up">
 
         <!-- CARD PRINCIPAL -->
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row min-h-[580px]"
-             style="border: 1px solid rgba(34,197,94,.1)">
+        <div class="bg-white rounded-[40px] shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col md:flex-row min-h-[640px] border border-gray-100">
 
             <!-- ── PANEL IZQUIERDO ──────────────────────── -->
-            <div class="left-panel hidden md:flex md:w-5/12 p-12 flex-col justify-between">
+            <div class="left-panel hidden md:flex md:w-5/12 p-14 flex-col justify-between text-white">
                 <div class="relative z-10">
                     <!-- Logo -->
-                    <div class="flex items-center gap-3 mb-10">
-                        <div class="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-green-900/40">
-                            <i class="fas fa-seedling text-white"></i>
+                    <div class="flex items-center gap-4 mb-14">
+                        <div class="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/20 shadow-2xl">
+                            <i class="fas fa-seedling text-green-400 text-xl"></i>
                         </div>
                         <div>
-                            <div class="text-green-300 font-bold text-base leading-none">SystemCOFF 360</div>
-                            <div class="text-green-700 text-[9px] uppercase tracking-widest mt-0.5">Gestión de Fincas</div>
+                            <div class="text-white font-black text-xl tracking-tight leading-none">SystemCOFF <span class="text-green-400">360</span></div>
+                            <div class="text-green-400/60 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Gestión Inteligente</div>
                         </div>
                     </div>
 
-                    <h2 class="text-3xl font-bold text-white mb-4 leading-tight">
-                        ¡Bienvenido<br>de nuevo!
+                    <h2 class="text-4xl font-black text-white mb-6 leading-[1.1] tracking-tight">
+                        Cultiva el <br><span class="text-green-400 text-gradient bg-clip-text">Éxito</span> de tu Finca.
                     </h2>
-                    <p class="text-sm text-green-500 leading-relaxed mb-8">
-                        Accede a tu panel para registrar cosechas, gestionar tareas, controlar inventario y
-                        analizar el rendimiento de tu finca.
+                    <p class="text-base text-green-100/60 leading-relaxed mb-10 font-medium">
+                        Accede a la plataforma líder en gestión cafetera y toma el control total de tu producción.
                     </p>
 
                     <!-- Features -->
-                    <div class="flex flex-col gap-3">
-                        <div class="flex items-center gap-3 text-sm text-green-400">
-                            <span class="feat-dot"></span>Registro de cosechas y ventas
+                    <div class="space-y-5">
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                                <i class="fas fa-check text-green-400 text-xs"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-green-100/80">Cosechas en tiempo real</span>
                         </div>
-                        <div class="flex items-center gap-3 text-sm text-green-400">
-                            <span class="feat-dot"></span>Control de inventario con alertas
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                                <i class="fas fa-check text-green-400 text-xs"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-green-100/80">Inventario inteligente</span>
                         </div>
-                        <div class="flex items-center gap-3 text-sm text-green-400">
-                            <span class="feat-dot"></span>Gestión de tareas para trabajadores
-                        </div>
-                        <div class="flex items-center gap-3 text-sm text-green-400">
-                            <span class="feat-dot gold"></span>Vista móvil para campo sin internet
-                        </div>
-                        <div class="flex items-center gap-3 text-sm text-green-400">
-                            <span class="feat-dot gold"></span>Reportes y análisis financiero
+                        <div class="flex items-center gap-4 group">
+                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                                <i class="fas fa-check text-green-400 text-xs"></i>
+                            </div>
+                            <span class="text-sm font-semibold text-green-100/80">Reportes detallados</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- Badges roles -->
-                <div class="relative z-10">
-                    <div class="bg-green-500/8 border border-green-500/15 rounded-2xl p-4 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-green-500/15 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-lock text-green-400"></i>
+                <!-- Footer del panel -->
+                <div class="glass-panel rounded-3xl p-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
                         <div>
-                            <p class="text-xs text-green-400 leading-tight">Acceso seguro con cifrado bcrypt.</p>
-                            <p class="text-xs text-green-700 mt-0.5">Finca Los Guácimos · Tesalia, Huila</p>
+                            <p class="text-xs font-bold text-white uppercase tracking-wider">Acceso Seguro</p>
+                            <p class="text-[11px] text-green-100/50 mt-0.5 font-medium">Protección de datos garantizada</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- ── PANEL DERECHO (FORM) ─────────────────── -->
-            <div class="w-full md:w-7/12 p-8 md:p-12 flex flex-col justify-center bg-green-50 border-l border-green-100">
-
-                <!-- Logo mobile -->
-                <div class="flex items-center justify-center gap-3 mb-8 md:hidden">
-                    <div class="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-md">
-                        <i class="fas fa-seedling text-white text-sm"></i>
-                    </div>
-                    <span class="text-green-800 font-bold text-base">SystemCOFF 360</span>
+            <div class="w-full md:w-7/12 p-10 md:p-16 flex flex-col justify-center bg-white">
+                
+                <div class="mb-10 text-center md:text-left">
+                    <h3 class="text-3xl font-black text-green-950 mb-2 tracking-tight">Iniciar Sesión</h3>
+                    <p class="text-gray-500 font-medium">Ingresa tus credenciales para continuar</p>
                 </div>
 
-                <!-- Title -->
-                <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-3">
-                        <span class="w-2 h-2 rounded-full bg-green-500" style="box-shadow:0 0 8px rgba(34,197,94,.6)"></span>
-                        <span class="text-xs font-bold uppercase tracking-widest text-green-600">Iniciar sesión</span>
-                    </div>
-                    <div class="inline-block bg-green-100/60 border border-green-200 rounded-2xl px-6 py-2.5 mb-3 shadow-sm">
-                        <h1 class="text-3xl font-bold text-green-800 m-0">Ingresar al sistema</h1>
-                    </div>
-                    <p class="text-sm text-gray-600 mt-1">Ingresa tus credenciales para continuar</p>
-                </div>
-
-                <!-- FORM -->
-                <form action="../../controllers/AuthController.php" method="POST" class="space-y-5">
-
-                    <!-- Email -->
+                <form action="../../controllers/AuthController.php" method="POST" class="space-y-6">
                     <div>
-                        <label class="block text-xs font-bold text-green-800 mb-1.5">
-                            Correo electrónico <span class="text-red-500">*</span>
-                        </label>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.2em] text-green-900/40 mb-2 ml-1">Correo Electrónico</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                <i class="fas fa-envelope text-sm"></i>
-                            </span>
-                            <input type="email" name="email" required placeholder="admin@finca.com"
-                                   class="field-input w-full pl-10 pr-4 py-3 rounded-xl text-sm">
+                            <i class="fas fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm z-10 pointer-events-none"></i>
+                            <input type="email" name="email" required placeholder="tu@ejemplo.com"
+                                class="field-input w-full pl-12 pr-5 py-4 rounded-2xl text-sm font-semibold text-green-950 placeholder:text-gray-300">
                         </div>
                     </div>
 
-                    <!-- Password -->
                     <div>
-                        <label class="block text-xs font-bold text-green-800 mb-1.5">
-                            Contraseña <span class="text-red-500">*</span>
-                        </label>
+                        <label class="block text-[11px] font-black uppercase tracking-[0.2em] text-green-900/40 mb-2 ml-1">Contraseña</label>
                         <div class="relative">
-                            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-gray-400">
-                                <i class="fas fa-lock text-sm"></i>
-                            </span>
+                            <i class="fas fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm z-10 pointer-events-none"></i>
                             <input type="password" name="password" id="password-input" required placeholder="••••••••"
-                                   class="field-input w-full pl-10 pr-12 py-3 rounded-xl text-sm">
-                            <button type="button" id="toggle-pass"
-                                    class="absolute inset-y-0 right-0 flex items-center pr-3.5 text-gray-400 text-sm hover:text-green-600 transition">
+                                class="field-input w-full pl-12 pr-12 py-4 rounded-2xl text-sm font-semibold text-green-950 placeholder:text-gray-300">
+                            <button type="button" id="toggle-pass" class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition-colors z-10">
                                 <i class="fas fa-eye" id="eye-icon"></i>
                             </button>
                         </div>
-                        <div class="text-right mt-2">
-                            <a href="#" class="text-xs text-green-600 hover:underline">¿Olvidaste tu contraseña?</a>
-                        </div>
                     </div>
 
-                    <!-- Recordar -->
-                    <div class="flex items-center gap-2">
-                        <input type="checkbox" id="remember" name="remember"
-                               class="h-4 w-4 rounded" style="accent-color:#22c55e">
-                        <label for="remember" class="text-sm text-gray-600">Recordar mi sesión por 7 días</label>
+                    <div class="flex items-center justify-between py-2">
+                        <label class="flex items-center gap-2 cursor-pointer group">
+                            <input type="checkbox" name="remember" class="w-5 h-5 rounded-lg border-gray-300 text-green-600 focus:ring-green-500/20">
+                            <span class="text-xs font-bold text-gray-500 group-hover:text-green-700 transition-colors">Recordarme</span>
+                        </label>
+                        <a href="#" class="text-xs font-black text-green-600 hover:text-green-700 transition-colors">¿Olvidaste tu contraseña?</a>
                     </div>
 
-                    <!-- Roles info -->
-                    <div class="bg-gray-50 border border-gray-200 rounded-xl p-3">
-                        <p class="text-xs text-gray-600 mb-2">Roles del sistema:</p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="bg-yellow-50 border border-yellow-200 text-yellow-700 text-xs font-bold px-3 py-1 rounded-full">
-                                <i class="fas fa-crown mr-1"></i>Administrador
-                            </span>
-                            <span class="bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">
-                                <i class="fas fa-hard-hat mr-1"></i>Trabajador
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Submit -->
-                    <button type="submit"
-                            class="btn-primary w-full text-white font-bold py-3.5 rounded-xl text-sm shadow-xl shadow-green-900/30">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Entrar al sistema
+                    <button type="submit" name="login"
+                        class="btn-primary w-full py-5 rounded-2xl text-white font-black text-base shadow-xl tracking-tight">
+                        Entrar al Sistema
                     </button>
                 </form>
 
-                <!-- Links -->
-                <div class="mt-8 flex flex-col gap-2 items-center">
-                    <p class="text-sm text-gray-600">
-                        ¿No tienes cuenta?
-                        <a href="registre.php" class="text-green-600 font-bold hover:underline ml-1">
-                            Regístrate aquí
-                        </a>
+                <div class="mt-12 text-center">
+                    <p class="text-sm font-bold text-gray-400">
+                        ¿No tienes una cuenta? 
+                        <a href="registre.php" class="text-green-600 hover:text-green-700 font-black ml-1">Regístrate gratis</a>
                     </p>
-                    <a href="../../index.php" class="text-xs text-gray-500 hover:text-green-600 transition">
-                        <i class="fas fa-arrow-left mr-1"></i> Volver al inicio
+                    <a href="../../public/index.php" class="inline-flex items-center gap-2 mt-8 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-green-600 transition-colors">
+                        <i class="fas fa-arrow-left"></i> Volver al Inicio
                     </a>
-                </div>
-
-                <!-- Footer branding -->
-                <div class="mt-8 pt-6 text-center border-t border-green-100">
-                    <p class="text-xs text-gray-500">
-                        SystemCOFF 360 v2.0 · <strong class="text-green-700">JD Solutions</strong> · SENA Ficha 3230026
-                    </p>
                 </div>
             </div>
 
@@ -287,6 +221,8 @@ unset($_SESSION['alert']);
             }
         });
     </script>
+
+    <?php include __DIR__ . '/../layouts/assistant_widget.php'; ?>
 
 </body>
 </html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SystemCOFF 360 — Gestión de Fincas Cafeteras</title>
-    <link rel="shortcut icon" type="image/png" href="img/ico.png">
+    <link rel="shortcut icon" type="image/png" href="../img/ico.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
@@ -13,73 +13,64 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #fcfdfc;
         }
 
-        /* ── GRADIENTE VERDE FINCA ── */
+        /* ── GRADIENTE PREMIUM ── */
         .gradient-bg {
-            background: linear-gradient(135deg, #14532d 0%, #16a34a 60%, #22c55e 100%);
+            background: linear-gradient(135deg, #064e3b 0%, #16a34a 60%, #22c55e 100%);
         }
 
-        .gradient-bg-soft {
-            background: linear-gradient(135deg, #022c12 0%, #15803d 100%);
+        .text-gradient {
+            background: linear-gradient(135deg, #064e3b 0%, #16a34a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* ── SLIDER ── */
-        .slide {
-            display: none;
+        /* ── GLASS NAVIGATION ── */
+        .nav-glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(22, 163, 74, 0.1);
         }
 
-        .slide.active {
-            display: block;
-            animation: fadeIn 0.15s ease;
+        /* ── ANIMACIONES ── */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(1.02);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .animate-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        /* ── CARDS ── */
+        /* ── CARDS PREMIUM ── */
         .feature-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .feature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(34, 197, 94, 0.12);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(6, 78, 59, 0.12);
         }
 
-        /* ── MODULE CARD ── */
         .mod-card {
-            transition: all 0.2s ease;
-            border: 1px solid rgba(34, 197, 94, 0.15);
+            transition: all 0.3s ease;
+            background: white;
+            border: 1px solid rgba(22, 163, 74, 0.08);
         }
 
         .mod-card:hover {
-            border-color: rgba(34, 197, 94, 0.4);
-            background: rgba(34, 197, 94, 0.06) !important;
-            transform: translateY(-3px);
+            border-color: #22c55e;
+            background: #f0fdf4 !important;
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(22, 163, 74, 0.08);
         }
 
         /* ── SCROLL SMOOTH ── */
         html {
             scroll-behavior: smooth;
-        }
-
-        /* ── NAV LINK ── */
-        .nav-link {
-            transition: color 0.15s ease;
-        }
-
-        .nav-link:hover {
-            color: #22c55e;
         }
     </style>
 </head>
@@ -89,31 +80,31 @@
     <!-- ════════════════════════════════════════════════
          NAVBAR
     ════════════════════════════════════════════════ -->
-    <nav class="bg-white border-b border-green-200 sticky top-0 z-50 shadow-sm">
+    <nav class="nav-glass sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+            <div class="flex justify-between h-20 items-center">
 
                 <!-- LOGO -->
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4 group cursor-pointer">
                     <div
-                        class="w-9 h-9 gradient-bg rounded-xl flex items-center justify-center shadow-lg shadow-green-200">
-                        <i class="fas fa-seedling text-white text-base"></i>
+                        class="w-11 h-11 gradient-bg rounded-2xl flex items-center justify-center shadow-2xl shadow-green-900/20 group-hover:rotate-6 transition-transform duration-300">
+                        <i class="fas fa-seedling text-white text-xl"></i>
                     </div>
                     <div class="leading-tight">
-                        <div class="text-green-800 font-bold text-base leading-none">SystemCOFF 360</div>
-                        <div class="text-green-600 text-[9px] uppercase tracking-widest">Gestión de Fincas</div>
+                        <div class="text-green-950 font-black text-xl leading-none tracking-tight">SystemCOFF <span class="text-green-600">360</span></div>
+                        <div class="text-green-700/60 text-[10px] font-bold uppercase tracking-[0.2em] mt-1">Gestión Inteligente</div>
                     </div>
                 </div>
 
                 <!-- LINKS DESKTOP -->
-                <div class="hidden md:flex items-center space-x-8 font-medium">
-                    <a href="#inicio" class="nav-link text-green-700 text-sm">Inicio</a>
-                    <a href="#nosotros" class="nav-link text-green-700 text-sm">Nosotros</a>
-                    <a href="#modulos" class="nav-link text-green-700 text-sm">Módulos</a>
-                    <a href="#objetivos" class="nav-link text-green-700 text-sm">Objetivos</a>
+                <div class="hidden md:flex items-center space-x-10">
+                    <a href="#inicio" class="text-sm font-bold text-green-900 hover:text-green-600 transition-colors">Inicio</a>
+                    <a href="#nosotros" class="text-sm font-bold text-green-900 hover:text-green-600 transition-colors">Nosotros</a>
+                    <a href="#modulos" class="text-sm font-bold text-green-900 hover:text-green-600 transition-colors">Módulos</a>
+                    <a href="#objetivos" class="text-sm font-bold text-green-900 hover:text-green-600 transition-colors mr-4">Objetivos</a>
                     <a href="../views/usuarios/login.php"
-                        class="gradient-bg text-white px-5 py-2 rounded-xl hover:opacity-90 transition text-sm font-semibold shadow-md shadow-green-200">
-                        <i class="fas fa-sign-in-alt mr-1"></i> Ingresar
+                        class="gradient-bg text-white px-7 py-3 rounded-2xl hover:scale-105 transition-all text-sm font-black shadow-xl shadow-green-900/20">
+                        Ingresar
                     </a>
                 </div>
 
@@ -148,28 +139,28 @@
             <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1600&q=80"
                 class="absolute inset-0 w-full h-full object-cover" style="filter: brightness(0.32) saturate(1.2)"
                 alt="Finca cafetera Colombia">
-            <div class="absolute inset-0"
-                style="background: linear-gradient(135deg, rgba(2,44,18,.75) 0%, rgba(2,13,6,.4) 100%)"></div>
-            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-                <span
-                    class="inline-flex items-center gap-2 bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+            <div class="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 animate-up">
+                <span class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 text-green-300 text-[10px] uppercase tracking-[0.3em] font-black px-4 py-2 rounded-full mb-6">
                     <i class="fas fa-seedling"></i> JD Solutions
                 </span>
-                <h1 class="text-4xl md:text-6xl font-bold mb-5 leading-tight">
+                <h1 class="text-5xl md:text-7xl font-black mb-6 leading-tight drop-shadow-2xl text-white">
                     Gestiona tu finca<br>
-                    <span class="text-green-300">desde un solo lugar</span>
+                    <span class="text-green-400">desde tu bolsillo</span>
                 </h1>
-                <p class="text-lg max-w-2xl text-green-100 leading-relaxed mb-8">
+                <p class="text-lg md:text-xl text-gray-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed">
                     La plataforma más completa para el registro de cosechas, control de inventario,
                     tareas y nómina de tu finca cafetera.
                 </p>
-                <div class="flex flex-wrap justify-center gap-4">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
                     <a href="../views/usuarios/login.php"
-                        class="gradient-bg text-white px-8 py-3 rounded-xl font-bold text-base shadow-xl hover:opacity-90 transition">
+                        class="w-full sm:w-auto gradient-bg text-white px-10 py-4 rounded-2xl font-bold text-base shadow-2xl shadow-green-900/40 hover:scale-105 transition-all">
                         <i class="fas fa-sign-in-alt mr-2"></i>Ingresar al sistema
                     </a>
                     <a href="#modulos"
-                        class="bg-white/10 backdrop-blur border border-white/20 text-white px-8 py-3 rounded-xl font-semibold text-base hover:bg-white/20 transition">
+                        class="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-2xl font-bold text-base hover:bg-white/20 transition-all">
                         <i class="fas fa-th-large mr-2"></i>Ver módulos
                     </a>
                 </div>
@@ -253,13 +244,11 @@
          ESTADÍSTICAS RÁPIDAS
     ════════════════════════════════════════════════ -->
     <section class="bg-white border-y border-green-100 py-12">
-        <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-6">
             <?php
             $stats = [
                 ['19', 'fas fa-th-large', 'green', 'Módulos del sistema'],
                 ['360°', 'fas fa-sync-alt', 'yellow', 'Gestión integral'],
-                ['PHP+MySQL', 'fas fa-database', 'blue', 'Stack tecnológico'],
-                ['📱', '', 'green', 'Vista móvil campo'],
             ];
             foreach ($stats as [$val, $ico, $color, $lbl]):
                 $colors = [
@@ -269,7 +258,7 @@
                 ];
                 $c = $colors[$color];
                 ?>
-                <div class="<?= $c['bg'] ?> border <?= $c['border'] ?> rounded-2xl p-6 text-center shadow-sm">
+                <div class="<?= $c['bg'] ?> border <?= $c['border'] ?> rounded-2xl p-6 text-center shadow-sm w-full sm:w-72">
                     <?php if ($ico): ?>
                         <div class="<?= $c['text'] ?> text-3xl mb-2"><i class="<?= $ico ?>"></i></div>
                     <?php endif; ?>
@@ -370,10 +359,10 @@
             ?>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <?php foreach ($modulos as [$ico, $nombre, $desc, $color]): ?>
-                    <div class="mod-card bg-green-50 shadow-sm border border-green-100 rounded-2xl p-4 cursor-default">
-                        <div class="text-2xl mb-3"><?= $ico ?></div>
-                        <div class="font-bold text-xs mb-1" style="color: <?= $color ?>"><?= $nombre ?></div>
-                        <div class="text-gray-600 text-xs leading-relaxed"><?= $desc ?></div>
+                    <div class="mod-card bg-white shadow-sm border border-green-100/50 rounded-3xl p-6 cursor-default hover:shadow-xl transition-all">
+                        <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-sm border border-gray-50"><?= $ico ?></div>
+                        <div class="font-black text-sm mb-2 text-green-950 uppercase tracking-tight"><?= $nombre ?></div>
+                        <div class="text-gray-500 text-xs leading-relaxed font-medium"><?= $desc ?></div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -463,79 +452,68 @@
     <!-- ════════════════════════════════════════════════
          FOOTER
     ════════════════════════════════════════════════ -->
-    <footer class="bg-white text-gray-500 py-16 border-t border-green-200">
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-12">
-
-            <!-- Columna 1 -->
-            <div>
-                <div class="flex items-center gap-3 mb-4">
-                    <div class="w-8 h-8 gradient-bg rounded-xl flex items-center justify-center shadow-md">
-                        <i class="fas fa-seedling text-white text-sm"></i>
+    <footer class="bg-[#022c22] text-white py-20 mt-12">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-16">
+            
+            <!-- Columna 1: Branding -->
+            <div class="col-span-1">
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center shadow-2xl">
+                        <i class="fas fa-seedling text-white text-xl"></i>
                     </div>
-                    <span class="text-green-800 font-bold text-base">SystemCOFF 360</span>
+                    <span class="text-2xl font-black tracking-tighter">SystemCOFF 360</span>
                 </div>
-                <p class="text-sm leading-relaxed mb-4">
-                    Sistema integral de gestión para fincas cafeteras. Desarrollado por
-                    <strong class="text-green-700">JD Solutions</strong>
+                <p class="text-green-100/60 text-sm leading-relaxed mb-8 max-w-xs">
+                    Impulsando la caficultura colombiana con herramientas de gestión 360°. Tecnología diseñada por y para el campo.
                 </p>
-                <span
-                    class="inline-block bg-green-50 border border-green-200 text-green-600 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-
-                </span>
+                <div class="flex gap-4">
+                    <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-500 transition-all duration-300">
+                        <i class="fab fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-500 transition-all duration-300">
+                        <i class="fab fa-whatsapp text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-green-500 transition-all duration-300">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                </div>
             </div>
 
-            <!-- Columna 2 -->
+            <!-- Columna 2: Módulos -->
             <div>
-                <h4 class="text-green-800 font-bold mb-5">Módulos principales</h4>
-                <ul class="space-y-2 text-sm">
-                    <?php foreach ([
-                        ['fas fa-leaf', 'text-green-600', 'Lotes y Cosechas'],
-                        ['fas fa-dollar-sign', 'text-yellow-600', 'Ventas y Reportes'],
-                        ['fas fa-users', 'text-blue-500', 'Tareas y Nómina'],
-                        ['fas fa-boxes', 'text-green-600', 'Inventario e Insumos'],
-                        ['fas fa-hard-hat', 'text-orange-500', 'EPP y Herramientas'],
-                        ['fas fa-truck', 'text-teal-500', 'Proveedores y Compras'],
-                    ] as [$ico, $icolor, $txt]): ?>
-                        <li class="flex items-center gap-2 text-gray-600">
-                            <i class="<?= $ico ?> <?= $icolor ?> text-xs w-4"></i><?= $txt ?>
-                        </li>
-                    <?php endforeach; ?>
+                <h4 class="text-white font-black uppercase text-xs tracking-[0.2em] mb-8">Módulos principales</h4>
+                <ul class="grid grid-cols-1 gap-4 text-green-100/60 text-sm font-medium">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-[10px]"></i> Lotes y Cosechas</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-[10px]"></i> Ventas y Reportes</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-[10px]"></i> Tareas y Nómina</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-[10px]"></i> Inventario e Insumos</li>
                 </ul>
             </div>
 
-            <!-- Columna 3 -->
+            <!-- Columna 3: Contacto -->
             <div>
-                <h4 class="text-green-800 font-bold mb-5">Contacto</h4>
-                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
-                    <i class="fas fa-map-marker-alt text-green-600"></i> Tesalia, Huila – Colombia
-                </p>
-                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
-                    <i class="fas fa-envelope text-green-600"></i> soporte@systemcoff.com
-                </p>
-                <p class="text-sm mt-2 flex items-center gap-2 text-gray-600">
-                    <i class="fas fa-phone text-green-600"></i> +57 3209737168
-                </p>
-                <div class="flex space-x-3 mt-5">
-                    <a href="#"
-                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
-                        <i class="fab fa-facebook text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
-                        <i class="fab fa-whatsapp text-sm"></i>
-                    </a>
-                    <a href="#"
-                        class="w-9 h-9 rounded-xl bg-green-50 border border-green-200 flex items-center justify-center text-green-600 hover:bg-green-100 transition">
-                        <i class="fab fa-github text-sm"></i>
-                    </a>
+                <h4 class="text-white font-black uppercase text-xs tracking-[0.2em] mb-8">Contacto</h4>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-white transition-all">
+                            <i class="fas fa-envelope text-sm"></i>
+                        </div>
+                        <span class="text-sm text-green-100/60">soporte@systemcoff.com</span>
+                    </div>
+                    <div class="flex items-center gap-4 group">
+                        <div class="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 group-hover:bg-green-500 group-hover:text-white transition-all">
+                            <i class="fas fa-phone-alt text-sm"></i>
+                        </div>
+                        <span class="text-sm text-green-100/60">+57 3209737168</span>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="border-t border-green-200 mt-14 pt-8 text-center text-xs text-gray-500">
-            &copy; <?= date('Y') ?> <strong class="text-green-700">SystemCOFF 360</strong> — Sistema de Gestión de
-            Fincas Cafeteras.
-            Desarrollado por <strong class="text-green-700">JD Solutions</strong>. Todos los derechos reservados.
+        <div class="max-w-7xl mx-auto px-4 border-t border-white/5 mt-20 pt-10 text-center">
+            <p class="text-[10px] uppercase tracking-[0.3em] text-green-100/20 font-black">
+                &copy; <?= date('Y') ?> Todos los derechos reservados a JD Solutions
+            </p>
         </div>
     </footer>
 
@@ -582,7 +560,6 @@
             a.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
     </script>
-
+    <?php include __DIR__ . '/../views/layouts/assistant_widget.php'; ?>
 </body>
-
 </html>

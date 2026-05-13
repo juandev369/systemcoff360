@@ -135,6 +135,7 @@ $tareas = $db->query("
 <head>
     <meta charset="UTF-8">
     <title>Gestión de tareas — SystemCOFF 360</title>
+    <link rel="shortcut icon" type="image/png" href="../../img/ico.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -169,16 +170,49 @@ $tareas = $db->query("
             </div>
         </div>
 
-        <nav class="space-y-2 flex-1">
-            <a href="admin.php" class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10">
-                <i class="fas fa-home w-5"></i>
-                Inicio
+        <?php $paginaActual = basename($_SERVER['PHP_SELF']); ?>
+         <nav class="space-y-2 flex-1">
+
+            <a href="admin.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'admin.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+                <i class="fas fa-chart-line w-5"></i>
+                Dashboard
             </a>
 
-            <a href="admin_tareas.php" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-green-500/20">
-                <i class="fas fa-clipboard-list w-5"></i>
-                Gestión de tareas
+            <a href="usuario_crear.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'usuario_crear.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+              <i class="fas fa-user-plus w-5"></i>
+              Crear usuario
             </a>
+
+            <a href="usuarios.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'usuarios.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+              <i class="fas fa-users w-5"></i>
+              Usuarios
+            </a>
+            <a href="lotes.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'lotes.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+             <i class="fas fa-map-marked-alt w-5"></i>
+              Lotes
+            </a>
+
+            <a href="admin_tareas.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'admin_tareas.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+              <i class="fas fa-clipboard-check w-5"></i>
+              Tareas
+            </a>
+
+           <a href="inventario.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'inventario.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+              <i class="fas fa-warehouse w-5"></i>
+              Inventario
+           </a>
+
+           <a href="entregas.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'entregas.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+                <i class="fas fa-truck-loading w-5"></i>
+                Entregas
+           </a>
+
+           <a href="asistente.php" class="flex items-center gap-3 px-4 py-3 rounded-xl <?= $paginaActual === 'asistente.php' ? 'bg-green-500/20 text-green-100' : 'hover:bg-white/10 transition' ?>">
+                <i class="fas fa-robot w-5"></i>
+                Asistente AI
+           </a>
+
+           
         </nav>
     </aside>
 
