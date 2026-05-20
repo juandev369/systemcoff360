@@ -121,11 +121,23 @@ $isLoggedIn = isset($_SESSION['usuario']);
             }
         };
 
-        // Identificar módulo específico para ayuda personalizada
+        // Identificar módulo específico para ayuda personalizada (info, pregunta y tags)
         function getModuleHelp() {
-            if (PATH.includes('inventario')) return "Estás en **Inventario**. Aquí puedes registrar entradas/salidas de fertilizantes, herramientas y EPP.";
-            if (PATH.includes('lotes')) return "Estás en **Lotes**. Aquí mapeas cada sección de la finca por variedad de café.";
-            if (PATH.includes('usuarios')) return "Estás en **Usuarios**. Aquí controlas quién accede al sistema.";
+            if (PATH.includes('inventario')) return {
+                info: "Estás en **Inventario**. Aquí puedes registrar entradas/salidas de insumos y controlar stock.",
+                question: "¿Necesitas registrar una entrada, registrar una salida o ver el estado de stock?",
+                tags: ["Registrar Entrada","Registrar Salida","Ver Stocks"]
+            };
+            if (PATH.includes('lotes')) return {
+                info: "Estás en **Lotes**. Aquí mapeas y gestionas parcelas por variedad y estado.",
+                question: "¿Quieres crear un nuevo lote, ver detalles de un lote o actualizar su estado?",
+                tags: ["Crear Lote","Ver Lotes","Actualizar Estado"]
+            };
+            if (PATH.includes('usuarios')) return {
+                info: "Estás en **Usuarios**. Aquí gestionas cuentas y permisos.",
+                question: "¿Deseas crear un usuario, modificar roles o revisar accesos?",
+                tags: ["Crear Usuario","Modificar Roles","Revisar Accesos"]
+            };
             return null;
         }
 
@@ -133,12 +145,22 @@ $isLoggedIn = isset($_SESSION['usuario']);
             const ctx = knowledge[ROLE] || knowledge.publico;
             messages.innerHTML = '';
             addBotMsg(ctx.welcome);
-            const moduleInfo = getModuleHelp();
-            if (moduleInfo) setTimeout(() => addBotMsg(moduleInfo), 1000);
-            updateTags(ctx.tags);
+
+            const moduleHelp = getModuleHelp();
+            if (moduleHelp) {
+                // Mostrar información del módulo y luego una pregunta proactiva con etiquetas relacionadas
+                setTimeout(() => addBotMsg(moduleHelp.info), 600);
+                setTimeout(() => {
+                    addBotMsg(moduleHelp.question);
+                    updateTags(moduleHelp.tags || ctx.tags);
+                }, 1200);
+            } else {
+                updateTags(ctx.tags);
+            }
         }
 
         function updateTags(tags) {
+            tags = tags || [];
             tagsContainer.innerHTML = tags.map(tag => `<button onclick="coffyAsk('${tag}')" class="tag-style">${tag}</button>`).join('');
         }
 
@@ -197,7 +219,27 @@ $isLoggedIn = isset($_SESSION['usuario']);
                         addBotMsg(data.extract || "No encontré info online, pero he guardado tu consulta.");
                     } catch (e) { addBotMsg("Error de conexión."); }
                 } else {
-                    addBotMsg("Entendido. Estoy analizando tu consulta en el contexto de este módulo. ¿Deseas que redacte una nota profesional sobre esto?");
+                    // Enviar la consulta al endpoint local para búsqueda en la documentación y vistas
+                    try {
+                        typingText.innerText = `Buscando en la documentación...`;
+                        typing.classList.remove('hidden');
+                        const res = await fetch('/assistant_search.php?q=' + encodeURIComponent(q));
+                        const data = await res.json();
+                        typing.classList.add('hidden');
+                        if (data && data.ok && Array.isArray(data.matches) && data.matches.length) {
+                            addBotMsg("He encontrado la siguiente información relevante:");
+                            data.matches.forEach(m => {
+                                const short = m.snippet.length > 300 ? m.snippet.substring(0,300) + '...' : m.snippet;
+                                addBotMsg(`<strong>${m.file}</strong>: ${short}`);
+                            });
+                            addBotMsg("¿Te ayudo a redactar una acción basada en esto o quieres más detalles?");
+                        } else {
+                            addBotMsg("No encontré coincidencias locales. ¿Quieres que busque en la web o que redacte una respuesta basada en la descripción?");
+                        }
+                    } catch (e) {
+                        typing.classList.add('hidden');
+                        addBotMsg("Error al consultar la documentación local. Intenta de nuevo más tarde.");
+                    }
                 }
             }, 1200);
         }

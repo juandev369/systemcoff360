@@ -17,3 +17,4 @@ SystemCOFF 360 es una plataforma web desarrollada en PHP orientada a la gestión
 2. La vista envía una petición (GET/POST) a un **Controlador** (`controllers/`).
 3. El controlador procesa la solicitud, instancia los **Modelos** (`models/`) necesarios y ejecuta las consultas.
 4. El controlador decide a qué vista redirigir y envía mensajes de éxito o error usando sesiones (`$_SESSION['alert']`).
+
